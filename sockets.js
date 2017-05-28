@@ -22,7 +22,6 @@ exports.onConnect = (io) => (socket) => {
       eventData.creator = socket.request.user;
       io.emit('play', eventData);
     }
-    // spara event i databasen
   });
 
   /*

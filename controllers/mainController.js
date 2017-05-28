@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Video = mongoose.model('Video');
 const Event = mongoose.model('Event');
 const axios = require('axios');
-//const Store = mongoose.model('Store');
 
 exports.homePage = async (req, res) => {
   if (req.user) console.log(req.user);
@@ -50,11 +49,3 @@ exports.storeEvent = async (req, res, next) => {
 
   res.json(storedEvent);
 };
-
-
-    // spara event i databasen, ska bara sparas ett event, inte ett för varje klient...
-    /*new Event({
-      user: 'Jonathan',
-      type: 'pause',
-      typeDescription: 'pausade'
-    }).save()*/
