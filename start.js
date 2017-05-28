@@ -27,7 +27,6 @@ require('./models/Video');
 const app = require('./app');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var sharedsession = require("express-socket.io-session");
 var passportSocketIo = require('passport.socketio');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
@@ -35,8 +34,6 @@ const cookieParser = require('cookie-parser');
 // Start listening on sockets
 const { onConnect } = require('./sockets');
 io.on('connection', onConnect(io));
-
-//io.use(sharedsession(app.get('session')));
 
 io.use(passportSocketIo.authorize({
   key: process.env.KEY,
