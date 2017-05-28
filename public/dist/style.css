@@ -529,7 +529,8 @@ pre.error {
     line-height: 2;
     border: 1px solid #aaa;
     border-radius: 3px;
-    padding-left: 5px; }
+    padding-left: 5px;
+    font-family: 'Roboto'; }
 
 .search-container {
   width: 80%;
