@@ -532,35 +532,6 @@ pre.error {
   width: 80%;
   padding: 10px 0; }
 
-.events-container h1 {
-  font-size: 1.2em;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 20px;
-  font-weight: normal; }
-
-header {
-  height: 56px;
-  background: linear-gradient(90deg, #48ded4 0%, #a026bf 20%, #e82c75 60%, #FFC40E 85%, #48ded4 95%);
-  display: -ms-flexbox;
-  display: flex; }
-
-.content {
-  display: -ms-flex;
-  display: -ms-flexbox;
-  display: flex; }
-
-.content .video-container {
-  width: 78%;
-  padding: 10px 0 0 10px; }
-
-.content .events-container {
-  width: 22%;
-  padding: 10px; }
-
-.content > div:first-child {
-  margin-right: 10px; }
-
 .event {
   display: -ms-flexbox;
   display: flex;
@@ -642,5 +613,34 @@ header {
 .ink-reaction {
   position: relative;
   overflow: hidden; }
+
+.events-container h1 {
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: normal; }
+
+header {
+  height: 56px;
+  background: linear-gradient(90deg, #48ded4 0%, #a026bf 20%, #e82c75 60%, #FFC40E 85%, #48ded4 95%);
+  display: -ms-flexbox;
+  display: flex; }
+
+.content {
+  display: -ms-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.content .video-container {
+  width: 78%;
+  padding: 10px 0 0 10px; }
+
+.content .events-container {
+  width: 22%;
+  padding: 10px; }
+
+.content > div:first-child {
+  margin-right: 10px; }
 
 /*# sourceMappingURL=style.css.map*/

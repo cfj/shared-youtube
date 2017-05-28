@@ -1,0 +1,115 @@
+.event {
+  display: flex;
+  margin-bottom: 1em;
+  line-height: 1.4;
+  &__user {
+    width: 15%;
+    & img {
+      border-radius: 50%;
+    }
+  }
+
+  &__description {
+    width: 85%;
+    font-size: 0.8em;
+  }
+}
+
+.events {
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.login {
+  text-align: center;
+  
+  &__button {
+    display: inline-block;
+    width: 191px;
+    height: 46px;
+    background-image: url('/images/google_signin_normal.png');
+
+    &:active {
+      background-image: url('/images/google_signin_pressed.png');
+    }
+  }
+}
+
+.list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  line-height: 24px;
+  
+  .tile {
+    position: relative;
+    display: table;
+    width: 100%;
+    min-height: 48px;
+
+    & > a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tile-content {
+      display: table-cell;
+      padding-left: 16px;
+
+      & > div {
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
+
+    .tile-content:last-child {
+      padding-right: 16px;
+    }
+
+    .tile-icon:first-child {
+      text-align: left;
+    }
+
+    .tile-icon {
+      min-width: 56px;
+      width: 56px;
+      padding: 8px 0;
+      text-align: right;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 40px;
+        vertical-align: middle;
+        border: 0;
+      }
+    }
+
+    .tile-text {
+      padding: 12px 0;
+      font-size: 16px;
+      width: 100%;
+
+      small {
+        display: block;
+        font-size: 14px;
+        opacity: 0.6;
+      }
+
+      span {
+        float: right;
+        font-size: 12px;
+        opacity: 0.6;
+      }
+    }
+  }
+}
+
+.ink-reaction {
+  position: relative;
+  overflow: hidden;
+}
