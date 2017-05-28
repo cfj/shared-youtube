@@ -218,14 +218,14 @@ socket.on('pause', (e) => {
   console.log('pausing the video via socket', e);
   pausedViaSocket = true;
   pauseVideo();
-  appendEventHtml(getEventHtml(e), '.events');
+  appendEventHtml(getEventHtml(e), '.list');
 });
 
 socket.on('play', (e) => {
   console.log('playing the video via socket', e);
   playedViaSocket = true;
   playVideo();
-  appendEventHtml(getEventHtml(e), '.events');
+  appendEventHtml(getEventHtml(e), '.list');
 });
 
 socket.on('changing video', (video) => {

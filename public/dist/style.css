@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);html {
+@import url(https://fonts.googleapis.com/css?family=Roboto);html {
   font-size: 10px; }
 
 body {
@@ -438,7 +438,7 @@ html {
 body {
   font-size: 1.5rem;
   color: #303030;
-  font-family: 'Open Sans'; }
+  font-family: 'Roboto'; }
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 5rem;
@@ -551,11 +551,11 @@ header {
   display: flex; }
 
 .content .video-container {
-  width: 80%;
+  width: 78%;
   padding: 10px 0 0 10px; }
 
 .content .events-container {
-  width: 20%;
+  width: 22%;
   padding: 10px; }
 
 .content > div:first-child {
@@ -591,5 +591,56 @@ header {
     background-image: url("/images/google_signin_normal.png"); }
     .login__button:active {
       background-image: url("/images/google_signin_pressed.png"); }
+
+.list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  line-height: 24px; }
+  .list .tile {
+    position: relative;
+    display: table;
+    width: 100%;
+    min-height: 48px; }
+    .list .tile > a {
+      text-decoration: none;
+      color: inherit; }
+    .list .tile .tile-content {
+      display: table-cell;
+      padding-left: 16px; }
+      .list .tile .tile-content > div {
+        display: table-cell;
+        vertical-align: middle; }
+    .list .tile .tile-content:last-child {
+      padding-right: 16px; }
+    .list .tile .tile-icon:first-child {
+      text-align: left; }
+    .list .tile .tile-icon {
+      min-width: 56px;
+      width: 56px;
+      padding: 8px 0;
+      text-align: right; }
+      .list .tile .tile-icon img {
+        width: 40px;
+        height: 40px;
+        border-radius: 40px;
+        vertical-align: middle;
+        border: 0; }
+    .list .tile .tile-text {
+      padding: 12px 0;
+      font-size: 16px;
+      width: 100%; }
+      .list .tile .tile-text small {
+        display: block;
+        font-size: 14px;
+        opacity: 0.6; }
+      .list .tile .tile-text span {
+        float: right;
+        font-size: 12px;
+        opacity: 0.6; }
+
+.ink-reaction {
+  position: relative;
+  overflow: hidden; }
 
 /*# sourceMappingURL=style.css.map*/

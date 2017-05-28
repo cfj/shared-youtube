@@ -5,17 +5,19 @@ block content
     div#player
 
   .events-container
-    h1 Playback history
     .events
       if events
-        each event in events
-          .event
-            if event.creator
-              .event__user
-                img(src=event.creator.google.profileImageUrl width="40" height="40")
-              .event__description
-                div #{event.creator.google.name} #{event.typeDescription} 
-                  a(href=`#${event.videoId}`) #{event.videoTitle}
+        ul.list
+          each event in events
+            li.tile
+              .tile-content.ink-reaction
+                .tile-icon
+                  img(src=event.creator.google.profileImageUrl)
+                .tile-text #{event.creator.google.name} #{event.typeDescription} 
+                  span= h.moment(event.created).fromNow()
+                  small
+                    a(href=`#${event.videoId}`) #{event.videoTitle}
+
     .login
       if !user
         a(href="/auth/google" class="login__button")
