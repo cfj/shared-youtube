@@ -15910,7 +15910,7 @@ var _configuredMoment = __webpack_require__(3);
 
 function getEventHtml(event) {
   console.log(event);
-  var html = '\n    <li class="tile">\n      <div class="tile-content ink-reaction">\n        <div class="tile-icon">\n          <img src="' + event.creator.google.profileImageUrl + '">\n        </div>\n      <div class="tile-text">\n        ' + event.creator.google.name + ' ' + event.typeDescription + ' <span data-timestamp="' + event.created + '">' + (0, _configuredMoment.moment)(event.created).fromNow() + '</span>\n        <small>\n          <a href="#' + event.videoId + '">' + event.videoTitle + '</a></small>\n        </div>\n      </div>\n    </li>\n  ';
+  var html = '\n    <li class="tile">\n      <div class="tile-content ink-reaction">\n        <div class="tile-icon">\n          <img src="' + event.creator.google.profileImageUrl + '">\n        </div>\n      <div class="tile-text">\n        ' + event.creator.google.name + ' ' + event.typeDescription + ' <span data-timestamp="' + event.created + '" title="' + event.created + '">' + (0, _configuredMoment.moment)(event.created).fromNow() + '</span>\n        <small>\n          <a href="#' + event.videoId + '">' + event.videoTitle + '</a></small>\n        </div>\n      </div>\n    </li>\n  ';
 
   return html;
 }

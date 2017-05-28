@@ -9,7 +9,7 @@ function getEventHtml(event) {
           <img src="${event.creator.google.profileImageUrl}">
         </div>
       <div class="tile-text">
-        ${event.creator.google.name} ${event.typeDescription} <span data-timestamp="${event.created}">${moment(event.created).fromNow()}</span>
+        ${event.creator.google.name} ${event.typeDescription} <span data-timestamp="${event.created}" title="${event.created}">${moment(event.created).fromNow()}</span>
         <small>
           <a href="#${event.videoId}">${event.videoTitle}</a></small>
         </div>
