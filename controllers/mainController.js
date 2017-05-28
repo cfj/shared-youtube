@@ -12,7 +12,6 @@ exports.homePage = async (req, res) => {
 };
 
 exports.storeVideo = async (req, res) => {
-  console.log('store video', req.body);
   let title = req.body.title;
   if (!req.body.title) {
     var youtubeData = await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${req.body.videoId}&key=${process.env.YOUTUBE_KEY}&part=snippet`);
@@ -41,11 +40,18 @@ exports.getLatestVideo = async (req, res) => {
 };
 
 exports.storeEvent = async (req, res, next) => {
-  if (!req.user) return next(); // gör middleware för detta
-
   let event = req.body;
   event.creator = req.user;
   var storedEvent = await new Event(event).save();
 
   res.json(storedEvent);
+};
+
+exports.requiresAuth = (req, res, next) => {
+  if (!req.user) {
+    res.status(401)
+       .send('Requires authentication. Please log in.');
+
+    return;
+  }
 };

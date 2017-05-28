@@ -50,7 +50,7 @@ function createYoutubePlayerFromSearch(video, isPlaylist) {
 }
 
 function createYoutubePlayer(video) {
-  if (!video.playlist) {
+  if (!video.playlist || !video.playlist.length) {
     playerConfig.videoId = video.videoId;
   } else {
     playerConfig.videoId = video.playlist[video.playlistIndex];
@@ -83,7 +83,7 @@ function storeVideoHistory(video) {
       console.log(res);
     })
     .catch(err => {
-      console.error(err);
+      console.log(err);
     });
 }
 
@@ -94,7 +94,7 @@ function storeEvent(event) {
       console.log(res);
     })
     .catch(err => {
-      console.error(err);
+      console.log(err);
     });
 }
 
@@ -114,13 +114,23 @@ function onPlayerStateChange(event) {
   var videoId = event.target.getVideoData().video_id;
   var videoTitle = event.target.getVideoData().title;
 
-  if (currentVideo !== videoId && !changeVideoViaSocket) {
+  var newVideo = {
+    videoId: videoId,
+    title: videoTitle
+  };
+
+  if (player.getPlaylist()) {
+    newVideo.playlist = player.getPlaylist();
+    newVideo.playlistIndex = player.getPlaylistIndex();
+  }
+
+  if (currentVideo.videoId !== videoId && !changeVideoViaSocket) {
     let video = {
       videoId: videoId,
       title: videoTitle
     };
 
-    if (player.getPlaylist()) {
+    if (player.getPlaylist() && player.getPlaylist().length) {
       video.playlist = player.getPlaylist();
       video.playlistIndex = player.getPlaylistIndex();
     }
@@ -129,7 +139,7 @@ function onPlayerStateChange(event) {
     storeVideoHistory(video);
   }
 
-  currentVideo = videoId;
+  currentVideo = newVideo;
 
   document.title = videoTitle;
 
