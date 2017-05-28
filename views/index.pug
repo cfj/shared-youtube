@@ -14,7 +14,7 @@ block content
                 .tile-icon
                   img(src=event.creator.google.profileImageUrl)
                 .tile-text #{event.creator.google.name} #{event.typeDescription} 
-                  span= h.moment(event.created).fromNow()
+                  span(data-timestamp=event.created)= h.moment(event.created).fromNow()
                   small
                     a(href=`#${event.videoId}`) #{event.videoTitle}
 

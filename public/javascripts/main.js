@@ -4,6 +4,7 @@ import axios from 'axios';
 import { $, $$ } from './modules/bling';
 import { getYouTubeVideoId } from './modules/getYoutubeVideoId'
 import { getEventHtml, appendEventHtml } from './modules/eventHtml'
+import { moment } from './modules/configuredMoment';
 
 var tag = document.createElement('script');
 var currentVideoTitle = '';
@@ -88,6 +89,7 @@ function storeVideoHistory(video) {
 }
 
 function storeEvent(event) {
+  delete event.created; // Let the database set the real value of this
   axios
     .post('/api/event', event)
     .then(res => {
@@ -141,24 +143,26 @@ function onPlayerStateChange(event) {
       var event = {
         type: 'play',
         typeDescription: 'played',
+        created: new Date().toISOString(),
         videoId,
         videoTitle
       };
       if (!playedViaSocket) {
-        storeEvent(event);
         socket.emit('play', event);
+        storeEvent(event);
       }
       break;
     case YT.PlayerState.PAUSED:
       var event = {
         type: 'pause',
         typeDescription: 'paused',
+        created: new Date().toISOString(),
         videoId,
         videoTitle
       };
       if (!pausedViaSocket) {
-        storeEvent(event);
         socket.emit('pause', event);
+        storeEvent(event);
       }
       break;
   }
@@ -240,3 +244,13 @@ socket.on('changing video', (video) => {
     });
   }
 });
+
+/*
+ * Keep times updated
+*/
+
+window.setInterval(() => {
+  $$('span[data-timestamp]').forEach((element) => {
+    element.innerText = moment(element.getAttribute('data-timestamp')).fromNow();
+  });
+}, 60000);

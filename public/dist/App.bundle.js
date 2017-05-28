@@ -964,33 +964,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.appendEventHtml = exports.getEventHtml = undefined;
 
-var _moment = __webpack_require__(37);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_moment2.default.locale('en', {
-  relativeTime: {
-    future: 'in %s',
-    past: '%s ago',
-    s: 'seconds',
-    ss: '%ss',
-    m: 'a minute',
-    mm: '%dm',
-    h: 'an hour',
-    hh: '%dh',
-    d: 'a day',
-    dd: '%dd',
-    M: 'a month',
-    MM: '%dM',
-    y: 'a year',
-    yy: '%dY'
-  }
-});
+var _configuredMoment = __webpack_require__(148);
 
 function getEventHtml(event) {
-  var html = '\n    <li class="tile">\n      <div class="tile-content ink-reaction">\n        <div class="tile-icon">\n          <img src="' + event.creator.google.profileImageUrl + '">\n        </div>\n      <div class="tile-text">\n        ' + event.creator.google.name + ' ' + event.typeDescription + ' <span>' + (0, _moment2.default)(event.created).fromNow() + '</span>\n        <small>\n          <a href="#' + event.videoId + '">' + event.videoTitle + '</a></small>\n        </div>\n      </div>\n    </li>\n  ';
+  console.log(event);
+  var html = '\n    <li class="tile">\n      <div class="tile-content ink-reaction">\n        <div class="tile-icon">\n          <img src="' + event.creator.google.profileImageUrl + '">\n        </div>\n      <div class="tile-text">\n        ' + event.creator.google.name + ' ' + event.typeDescription + ' <span data-timestamp="' + event.created + '">' + (0, _configuredMoment.moment)(event.created).fromNow() + '</span>\n        <small>\n          <a href="#' + event.videoId + '">' + event.videoTitle + '</a></small>\n        </div>\n      </div>\n    </li>\n  ';
 
   return html;
 }
@@ -1845,6 +1823,8 @@ var _getYoutubeVideoId = __webpack_require__(11);
 
 var _eventHtml = __webpack_require__(10);
 
+var _configuredMoment = __webpack_require__(148);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var tag = document.createElement('script');
@@ -1924,6 +1904,7 @@ function storeVideoHistory(video) {
 }
 
 function storeEvent(event) {
+  delete event.created; // Let the database set the real value of this
   _axios2.default.post('/api/event', event).then(function (res) {
     console.log(res);
   }).catch(function (err) {
@@ -1974,24 +1955,26 @@ function onPlayerStateChange(event) {
       var event = {
         type: 'play',
         typeDescription: 'played',
+        created: new Date().toISOString(),
         videoId: videoId,
         videoTitle: videoTitle
       };
       if (!playedViaSocket) {
-        storeEvent(event);
         socket.emit('play', event);
+        storeEvent(event);
       }
       break;
     case YT.PlayerState.PAUSED:
       var event = {
         type: 'pause',
         typeDescription: 'paused',
+        created: new Date().toISOString(),
         videoId: videoId,
         videoTitle: videoTitle
       };
       if (!pausedViaSocket) {
-        storeEvent(event);
         socket.emit('pause', event);
+        storeEvent(event);
       }
       break;
   }
@@ -2073,6 +2056,16 @@ socket.on('changing video', function (video) {
     });
   }
 });
+
+/*
+ * Keep times updated
+*/
+
+window.setInterval(function () {
+  (0, _bling.$$)('span[data-timestamp]').forEach(function (element) {
+    element.innerText = (0, _configuredMoment.moment)(element.getAttribute('data-timestamp')).fromNow();
+  });
+}, 60000);
 
 /***/ }),
 /* 31 */,
@@ -17251,6 +17244,45 @@ webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 147;
 
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.moment = undefined;
+
+var _moment = __webpack_require__(37);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_moment2.default.locale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s ago',
+    s: 'seconds',
+    ss: '%ss',
+    m: 'a minute',
+    mm: '%dm',
+    h: 'an hour',
+    hh: '%dh',
+    d: 'a day',
+    dd: '%dd',
+    M: 'a month',
+    MM: '%dM',
+    y: 'a year',
+    yy: '%dY'
+  }
+});
+
+exports.moment = _moment2.default;
 
 /***/ })
 /******/ ]);
