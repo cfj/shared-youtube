@@ -28,6 +28,8 @@ exports.storeVideo = async (req, res) => {
     video.playlistIndex = req.body.playlistIndex;
   }
 
+  console.log('storing video', video);
+
   const storedVideo = await (new Video(video)).save();
 
   res.json(storedVideo);
@@ -47,11 +49,12 @@ exports.storeEvent = async (req, res, next) => {
   res.json(storedEvent);
 };
 
-exports.requiresAuth = (req, res, next) => {
-  if (!req.user) {
-    res.status(401)
-       .send('Requires authentication. Please log in.');
-
+exports.isLoggedIn = (req, res, next) => {
+  if(req.isAuthenticated()) {
+    next();
     return;
   }
+
+  res.status(401)
+     .send('Requires authentication. Please log in.');
 };

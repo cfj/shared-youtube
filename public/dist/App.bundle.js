@@ -1931,6 +1931,9 @@ function onPlayerStateChange(event) {
     newVideo.playlistIndex = player.getPlaylistIndex();
   }
 
+  console.log('currentVideo', currentVideo);
+  console.log('newVideo', newVideo);
+
   if (currentVideo.videoId !== newVideo.videoId && !changeVideoViaSocket) {
     socket.emit('changing video', newVideo);
     storeVideoHistory(newVideo);

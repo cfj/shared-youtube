@@ -7,10 +7,10 @@ const passport = require('passport');
 // Do work here
 router.get('/', catchErrors(mainController.homePage));
 
-router.post('/api/video', mainController.requiresAuth, catchErrors(mainController.storeVideo));
+router.post('/api/video', mainController.isLoggedIn, catchErrors(mainController.storeVideo));
 router.get('/api/videos/latest', catchErrors(mainController.getLatestVideo));
 
-router.post('/api/event', mainController.requiresAuth, catchErrors(mainController.storeEvent));
+router.post('/api/event', mainController.isLoggedIn, catchErrors(mainController.storeEvent));
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email']}));
 
