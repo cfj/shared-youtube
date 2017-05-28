@@ -526,7 +526,10 @@ pre.error {
   margin: 0 auto; }
   .search input {
     width: 100%;
-    line-height: 2; }
+    line-height: 2;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding-left: 5px; }
 
 .search-container {
   width: 80%;
@@ -550,8 +553,9 @@ pre.error {
   background-color: #ffffff;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
   padding: 10px;
-  overflow: hidden;
-  margin-bottom: 20px; }
+  overflow: auto;
+  margin-bottom: 20px;
+  max-height: 990px; }
 
 .login {
   text-align: center; }
@@ -623,7 +627,7 @@ pre.error {
 
 header {
   height: 56px;
-  background: linear-gradient(90deg, #48ded4 0%, #a026bf 20%, #e82c75 60%, #FFC40E 85%, #48ded4 95%);
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
   display: -ms-flexbox;
   display: flex; }
 
