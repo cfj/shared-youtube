@@ -113,7 +113,7 @@ function onPlayerReady(event) {
 // 5. The API calls this function when the player's state changes.
 function onPlayerStateChange(event) {
   console.log('player state changed');
-  var videoId = event.target.getVideoData().video_id;
+  var videoId = getYouTubeVideoId(player.getVideoUrl()); // event.target.getVideoData().video_id;
   var videoTitle = event.target.getVideoData().title;
 
   var newVideo = {
@@ -236,11 +236,11 @@ socket.on('changing video', (video) => {
   console.log('changing video to' + video.videoId);
   changeVideoViaSocket = true;
 
-  if (video.playlist) {
+  if (video.playlist && video.playlist.length) {
     player.loadPlaylist(video.playlist, video.playlistIndex);
   } else {
     player.loadVideoById({
-      videoId: video
+      videoId: video.videoId
     });
   }
 });
@@ -261,9 +261,10 @@ window.setInterval(() => {
 */
 
 $('.events-container .list').on('click', (e) => {
-  if (e.target && e.target.nodeName == "A") {
+  if (e.target && e.target.nodeName === "A") {
     e.preventDefault();
     let videoId = e.target.href.split('#')[1];
+    console.log('clicked, videoId is', videoId);
     changeVideo(videoId, false);
   }
 });
