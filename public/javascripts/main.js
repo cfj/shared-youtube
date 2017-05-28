@@ -119,32 +119,19 @@ function onPlayerStateChange(event) {
     title: videoTitle
   };
 
-  if (player.getPlaylist()) {
+  if (player.getPlaylist() && player.getPlaylist().length) {
     newVideo.playlist = player.getPlaylist();
     newVideo.playlistIndex = player.getPlaylistIndex();
   }
 
-  if (currentVideo.videoId !== videoId && !changeVideoViaSocket) {
-    let video = {
-      videoId: videoId,
-      title: videoTitle
-    };
-
-    if (player.getPlaylist() && player.getPlaylist().length) {
-      video.playlist = player.getPlaylist();
-      video.playlistIndex = player.getPlaylistIndex();
-    }
-
-    socket.emit('changing video', video);
-    storeVideoHistory(video);
+  if (currentVideo.videoId !== newVideo.videoId && !changeVideoViaSocket) {
+    socket.emit('changing video', newVideo);
+    storeVideoHistory(newVideo);
   }
 
   currentVideo = newVideo;
 
   document.title = videoTitle;
-
-  console.log(player.getPlaylist());
-  console.log(player.getPlaylistIndex());
 
   switch(event.data) {
     case YT.PlayerState.PLAYING:
