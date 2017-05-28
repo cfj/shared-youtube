@@ -1,0 +1,88 @@
+@import 'partials/variables';
+@import 'partials/layout';
+@import 'partials/normalize';
+@import 'partials/typography';
+@import 'partials/helpers';
+@import 'partials/search';
+
+.video-container {
+
+}
+
+.events-container {
+  h1 {
+    font-size: 1.2em;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 20px;
+    font-weight: normal;
+  }
+}
+
+header {
+  height: 56px;
+  background: $grad;
+  display: flex;
+}
+
+.content {
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.content .video-container {
+  width: 80%;
+  padding: 10px 0 0 10px;
+}
+
+.content .events-container {
+  width: 20%;
+  padding: 10px;
+}
+
+.content > div:first-child {
+  margin-right: 10px;
+}
+
+.event {
+  display: flex;
+  margin-bottom: 1em;
+  line-height: 1.4;
+  &__user {
+    width: 15%;
+    & img {
+      border-radius: 50%;
+    }
+  }
+
+  &__description {
+    width: 85%;
+    font-size: 0.8em;
+  }
+}
+
+.events {
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 10px;
+
+  max-height: 850px;
+  overflow: hidden;
+}
+
+.login {
+  text-align: center;
+  
+  &__button {
+    display: inline-block;
+    width: 191px;
+    height: 46px;
+    background-image: url('/images/google_signin_normal.png');
+
+    &:active {
+      background-image: url('/images/google_signin_pressed.png');
+    }
+  }
+}

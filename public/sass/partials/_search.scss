@@ -1,0 +1,15 @@
+.search {
+  position: relative;
+  width: 700px;
+  margin: 0 auto;
+
+  & input {
+    width: 100%;
+    line-height: 2;
+  }
+}
+
+.search-container {
+  width: 80%;
+  padding: 10px 0;
+}
