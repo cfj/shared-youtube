@@ -2067,6 +2067,18 @@ window.setInterval(function () {
   });
 }, 60000);
 
+/*
+ * Load video when clicking the video title in the playback history
+*/
+
+(0, _bling.$)('.events-container .list').on('click', function (e) {
+  if (e.target && e.target.nodeName == "A") {
+    e.preventDefault();
+    var videoId = e.target.href.split('#')[1];
+    changeVideo(videoId, false);
+  }
+});
+
 /***/ }),
 /* 31 */,
 /* 32 */,

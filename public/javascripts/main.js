@@ -254,3 +254,16 @@ window.setInterval(() => {
     element.innerText = moment(element.getAttribute('data-timestamp')).fromNow();
   });
 }, 60000);
+
+
+/*
+ * Load video when clicking the video title in the playback history
+*/
+
+$('.events-container .list').on('click', (e) => {
+  if (e.target && e.target.nodeName == "A") {
+    e.preventDefault();
+    let videoId = e.target.href.split('#')[1];
+    changeVideo(videoId, false);
+  }
+});

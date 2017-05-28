@@ -16,8 +16,9 @@ block content
                 .tile-text #{event.creator.google.name} #{event.typeDescription} 
                   span(data-timestamp=event.created)= h.moment(event.created).fromNow()
                   small
-                    a(href=`#${event.videoId}`) #{event.videoTitle}
-
-    .login
-      if !user
-        a(href="/auth/google" class="login__button")
+                    a(href=`#${event.videoId}` class="history-video-link") #{event.videoTitle}
+    if !user
+      .events
+        .login
+          div You must be signed in to make changes.
+          a(href="/auth/google" class="login__button")

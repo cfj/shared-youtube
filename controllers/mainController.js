@@ -5,7 +5,7 @@ const axios = require('axios');
 
 exports.homePage = async (req, res) => {
   if (req.user) console.log(req.user);
-  var events = await Event.find({}, null, {sort: {created: -1}}).limit(20).populate('creator');
+  var events = await Event.find({}, null, {sort: {created: -1}}).limit(10).populate('creator');
   res.render('index', {
     events
   });
