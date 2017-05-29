@@ -15,11 +15,12 @@ block content
       if events
         ul.list
           each event in events
-            li.tile
-              .tile-content.ink-reaction
-                .tile-icon
-                  img(src=event.creator.google.profileImageUrl)
-                .tile-text #{event.creator.google.name} #{event.typeDescription} 
-                  span(data-timestamp=event.created title=event.created)= h.moment(event.created).fromNow()
-                  small
-                    a(href=`#${event.videoId}` class="history-video-link") #{event.videoTitle}
+            if  event.creator
+              li.tile
+                .tile-content.ink-reaction
+                  .tile-icon
+                    img(src=event.creator.google.profileImageUrl)
+                  .tile-text #{event.creator.google.name} #{event.typeDescription} 
+                    span(data-timestamp=event.created title=event.created)= h.moment(event.created).fromNow()
+                    small
+                      a(href=`#${event.videoId}` class="history-video-link") #{event.videoTitle}
