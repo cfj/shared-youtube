@@ -103,7 +103,7 @@ function storeEvent(event) {
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-  //player.mute(); // Start muted
+  player.mute(); // Start muted
   event.target.playVideo();
 
   if (currentVideo.playlist) {
