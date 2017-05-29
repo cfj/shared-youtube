@@ -20,6 +20,7 @@ var changeVideoViaSocket = false;
 var textSearch = false;
 var container = $('.video-container');
 var currentVideo;
+var initialLoad = new Date().getTime();
 var playerConfig = {
   height: container.clientWidth / 1.7777777777,
   width: container.clientWidth,
@@ -147,7 +148,7 @@ function onPlayerStateChange(event) {
         videoId,
         videoTitle
       };
-      if (!playedViaSocket) {
+      if (!playedViaSocket && (new Date().getTime() - initialLoad > 2000)) { // Hack, find better solution
         socket.emit('play', event);
         storeEvent(event);
       }
