@@ -20,26 +20,30 @@ passport.use(new GoogleStrategy({
   callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, function(token, refreshToken, profile, done) {
   process.nextTick(function() {
-    User.findOne({ 'google.id': profile.id }, function(err, user) {
-      if (err) {
-        return done(err);
-      }
+    if (process.env.RESTRICTED_DOMAIN && profile._json.domain !== process.env.RESTRICTED_DOMAIN) {    
+      done(new Error("Cannot log in with that domain."));
+    } else {
+      User.findOne({ 'google.id': profile.id }, function(err, user) {
+        if (err) {
+          return done(err);
+        }
 
-      if (user) {
-        return done(null, user);
-      } else {
-        var newUser = new User();
-        newUser.google = extractProfile(profile, token);
+        if (user) {
+          return done(null, user);
+        } else {
+          var newUser = new User();
+          newUser.google = extractProfile(profile, token);
 
-        newUser.save(function(err) {
-          if (err) {
-            throw err;
-          }
+          newUser.save(function(err) {
+            if (err) {
+              throw err;
+            }
 
-          return done(null, newUser);
-        })
-      }
-    });
+            return done(null, newUser);
+          })
+        }
+      });
+    }
   });
 }));
 
