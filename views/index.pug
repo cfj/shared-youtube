@@ -5,6 +5,12 @@ block content
     div#player
 
   .events-container
+    if !user
+      .events
+        .login
+          div You must be signed in to make changes.
+          a(href="/auth/google" class="login__button")
+            
     .events
       if events
         ul.list
@@ -17,8 +23,3 @@ block content
                   span(data-timestamp=event.created title=event.created)= h.moment(event.created).fromNow()
                   small
                     a(href=`#${event.videoId}` class="history-video-link") #{event.videoTitle}
-    if !user
-      .events
-        .login
-          div You must be signed in to make changes.
-          a(href="/auth/google" class="login__button")
