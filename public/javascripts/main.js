@@ -148,7 +148,7 @@ function onPlayerStateChange(event) {
         videoId,
         videoTitle
       };
-      if (!playedViaSocket && (new Date().getTime() - initialLoad > 2000)) { // Hack, find better solution
+      if (!playedViaSocket && (new Date().getTime() - initialLoad > 4000)) { // Hack, find better solution
         socket.emit('play', event);
         storeEvent(event);
       }
