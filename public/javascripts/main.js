@@ -20,7 +20,7 @@ var changeVideoViaSocket = false;
 var textSearch = false;
 var container = $('.video-container');
 var currentVideo;
-var initialLoad = new Date().getTime();
+var initialPlay;
 var playerConfig = {
   height: container.clientWidth / 1.7777777777,
   width: container.clientWidth,
@@ -69,6 +69,7 @@ window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady() {
     .get('/api/videos/latest')
     .then(res => {
       if (res.data && res.data.videoId) {
+        initialPlay = true;
         currentVideo = res.data;
         createYoutubePlayer(res.data);
       }
@@ -148,10 +149,11 @@ function onPlayerStateChange(event) {
         videoId,
         videoTitle
       };
-      if (!playedViaSocket && (new Date().getTime() - initialLoad > 4000)) { // Hack, find better solution
+      if (!playedViaSocket && !initialPlay) {
         socket.emit('play', event);
         storeEvent(event);
       }
+      initialPlay = false;
       break;
     case YT.PlayerState.PAUSED:
       var event = {

@@ -17052,7 +17052,7 @@ var changeVideoViaSocket = false;
 var textSearch = false;
 var container = (0, _bling.$)('.video-container');
 var currentVideo;
-var initialLoad = new Date().getTime();
+var initialPlay;
 var playerConfig = {
   height: container.clientWidth / 1.7777777777,
   width: container.clientWidth,
@@ -17099,6 +17099,7 @@ function createYoutubePlayer(video) {
 window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady() {
   _axios2.default.get('/api/videos/latest').then(function (res) {
     if (res.data && res.data.videoId) {
+      initialPlay = true;
       currentVideo = res.data;
       createYoutubePlayer(res.data);
     }
@@ -17171,11 +17172,11 @@ function onPlayerStateChange(event) {
         videoId: videoId,
         videoTitle: videoTitle
       };
-      if (!playedViaSocket && new Date().getTime() - initialLoad > 4000) {
-        // Hack, find better solution
+      if (!playedViaSocket && !initialPlay) {
         socket.emit('play', event);
         storeEvent(event);
       }
+      initialPlay = false;
       break;
     case YT.PlayerState.PAUSED:
       var event = {
