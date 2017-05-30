@@ -14,6 +14,18 @@ function getYouTubeVideoId (url) {
   return ID;
 }
 
+function getYouTubePlaylistId (url) {
+  var reg = /[&?]list=([a-z0-9_]+)/i;
+  var match = reg.exec(url);
+
+  if (match && match[1].length){
+    return match[1];
+  } else {
+    return null;
+  }
+}
+
 export {
-  getYouTubeVideoId
+  getYouTubeVideoId,
+  getYouTubePlaylistId
 }

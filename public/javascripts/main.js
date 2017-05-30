@@ -2,7 +2,7 @@ import '../sass/style.scss';
 import axios from 'axios';
 
 import { $, $$ } from './modules/bling';
-import { getYouTubeVideoId } from './modules/getYoutubeVideoId'
+import { getYouTubeVideoId, getYouTubePlaylistId } from './modules/getYoutubeVideoId'
 import { getEventHtml, appendEventHtml } from './modules/eventHtml'
 import { moment } from './modules/configuredMoment';
 
@@ -37,8 +37,8 @@ var playerConfig = {
   }
 };
 
-function createYoutubePlayerFromSearch(video, isPlaylist) {
-  if (!isPlaylist) {
+function createYoutubePlayerFromSearch(video, playbackType) {
+  if (playbackType.type === 'single') {
     playerConfig.videoId = video;
     player = new YT.Player('player', playerConfig);
   } else {
@@ -46,7 +46,7 @@ function createYoutubePlayerFromSearch(video, isPlaylist) {
     playerConfig.videoId = 'EMfKa1jStE8';
     player.loadPlaylist({
       list: video,
-      listType: 'search'
+      listType: playbackType.type
     });
   }
 }
@@ -140,7 +140,7 @@ function onPlayerStateChange(event) {
 
   document.title = videoTitle;
 
-  switch(event.data) {
+  switch (event.data) {
     case YT.PlayerState.PLAYING:
       var event = {
         type: 'play',
@@ -154,6 +154,8 @@ function onPlayerStateChange(event) {
         storeEvent(event);
       }
       initialPlay = false;
+      playedViaSocket = false;
+      changeVideoViaSocket = false;
       break;
     case YT.PlayerState.PAUSED:
       var event = {
@@ -167,29 +169,35 @@ function onPlayerStateChange(event) {
         socket.emit('pause', event);
         storeEvent(event);
       }
+      pausedViaSocket = false;
       break;
-  }
-
-  playedViaSocket = false;
-  pausedViaSocket = false;
-  changeVideoViaSocket = false;
+  }  
 }
 
-function changeVideo(video, isPlaylist) {
+function changeVideo(video, playbackType) {
   if (!player) {
-    createYoutubePlayerFromSearch(video, isPlaylist);
+    createYoutubePlayerFromSearch(video, playbackType);
     return;
   }
 
-  if (isPlaylist) {
-    player.loadPlaylist({
-      list: video,
-      listType: 'search'
-    });
-  } else {
-    player.loadVideoById({
-      videoId: video
-    });
+  switch (playbackType.type) {
+    case 'single':
+      player.loadVideoById({
+        videoId: video
+      });
+      break;
+    case 'playlist':
+      player.loadPlaylist({
+        list: video,
+        listType: 'playlist'
+      });
+      break;
+    case 'search':
+      player.loadPlaylist({
+        list: video,
+        listType: 'search'
+      });
+      break;
   }
 }
 
@@ -206,13 +214,19 @@ var searchInput = $('#search-input');
 searchInput.on('keyup', function(e) {
   if (e.keyCode === 13) {
     var url = this.value;
-    var videoId = getYouTubeVideoId(url);
 
     if (!url.startsWith('http')) {
       // Wasn't a url then but a text search
-      changeVideo(videoId, true);
+      changeVideo(url, { type: 'search' });
     } else {
-      changeVideo(videoId, false);
+      var playlistId = getYouTubePlaylistId(url);
+      var videoId = getYouTubeVideoId(url);
+
+      if (playlistId) {
+        changeVideo(playlistId, { type: 'playlist' });
+      } else {
+        changeVideo(videoId, { type: 'single' });
+      }
     }
 
     this.value = '';
