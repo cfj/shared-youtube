@@ -17189,8 +17189,6 @@ function onPlayerStateChange(event) {
         storeEvent(event);
       }
       initialPlay = false;
-      playedViaSocket = false;
-      changeVideoViaSocket = false;
       break;
     case YT.PlayerState.PAUSED:
       var event = {
@@ -17204,9 +17202,12 @@ function onPlayerStateChange(event) {
         socket.emit('pause', event);
         storeEvent(event);
       }
-      pausedViaSocket = false;
       break;
   }
+
+  playedViaSocket = false;
+  pausedViaSocket = false;
+  changeVideoViaSocket = false;
 }
 
 function changeVideo(video, playbackType) {
