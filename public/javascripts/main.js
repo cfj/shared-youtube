@@ -291,7 +291,7 @@ $('.events-container .list').on('click', (e) => {
     e.preventDefault();
     let videoId = e.target.href.split('#')[1];
     console.log('clicked, videoId is', videoId);
-    changeVideo(videoId, false);
+    changeVideo(videoId, { type: 'single' });
   }
 });
 
