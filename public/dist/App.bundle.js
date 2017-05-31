@@ -17061,10 +17061,12 @@ var player;
 var pausedViaSocket = false;
 var playedViaSocket = false;
 var changeVideoViaSocket = false;
+var changedVolumeViaSocket = false;
 var textSearch = false;
 var container = (0, _bling.$)('.video-container');
 var currentVideo;
 var initialPlay;
+var currentVolume = 0;
 var playerConfig = {
   height: container.clientWidth / 1.7777777777,
   width: container.clientWidth,
@@ -17298,6 +17300,12 @@ socket.on('changing video', function (video) {
   }
 });
 
+socket.on('volume', function (e) {
+  console.log('setting volume to ', e);
+  changedVolumeViaSocket = true;
+  player.setVolume(e);
+});
+
 /*
  * Keep times updated
 */
@@ -17320,6 +17328,22 @@ window.setInterval(function () {
     changeVideo(videoId, false);
   }
 });
+
+/*
+ * Monitor the volume
+*/
+
+window.setInterval(function () {
+  var volume = player.getVolume();
+  if (volume !== currentVolume) {
+    currentVolume = volume;
+    if (!changedVolumeViaSocket) {
+      socket.emit('volume', volume);
+    }
+
+    changedVolumeViaSocket = false;
+  }
+}, 1000);
 
 /***/ })
 /******/ ]);

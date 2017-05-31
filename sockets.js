@@ -38,4 +38,11 @@ exports.onConnect = (io) => (socket) => {
       socket.broadcast.emit('changing video', video);
     }
   });
+
+  socket.on('volume', (volume) => {
+    console.log('somebody changed the volume to ' + volume);
+    if (socket.request.user) {
+      socket.broadcast.emit('volume', volume);
+    }
+  });
 };
