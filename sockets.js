@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Event = mongoose.model('Event');
+const Video = mongoose.model('Video');
 
 exports.onConnect = (io) => (socket) => {
   console.log('a user connected');
@@ -13,6 +14,11 @@ exports.onConnect = (io) => (socket) => {
     if (socket.request.user) {
       eventData.creator = socket.request.user;
       io.emit('pause', eventData);
+
+      delete eventData.created
+      let event = eventData;
+      event.creator = socket.request.user;
+      var storedEvent = new Event(event).save();
     }
   });
 
@@ -21,6 +27,11 @@ exports.onConnect = (io) => (socket) => {
     if (socket.request.user) {
       eventData.creator = socket.request.user;
       io.emit('play', eventData);
+
+      delete eventData.created
+      let event = eventData;
+      event.creator = socket.request.user;
+      var storedEvent = new Event(event).save();
     }
   });
 

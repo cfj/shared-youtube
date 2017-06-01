@@ -92,18 +92,6 @@ function storeVideoHistory(video) {
     });
 }
 
-function storeEvent(event) {
-  delete event.created; // Let the database set the real value of this
-  axios
-    .post('/api/event', event)
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
-
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
   player.mute(); // Start muted
@@ -153,7 +141,6 @@ function onPlayerStateChange(event) {
       };
       if (!playedViaSocket && !initialPlay) {
         socket.emit('play', event);
-        storeEvent(event);
       }
       initialPlay = false;
       break;
@@ -167,7 +154,6 @@ function onPlayerStateChange(event) {
       };
       if (!pausedViaSocket) {
         socket.emit('pause', event);
-        storeEvent(event);
       }
       break;
   }
