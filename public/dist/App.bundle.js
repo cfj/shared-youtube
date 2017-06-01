@@ -17962,7 +17962,6 @@ var container = (0, _bling.$)('.video-container');
 var currentVideo;
 var initialPlay;
 var currentVolume = 0;
-var socketId;
 var playerConfig = {
   height: container.clientWidth / 1.7777777777,
   width: container.clientWidth,
@@ -18037,17 +18036,14 @@ function onPlayerReady(event) {
 }
 
 // 5. The API calls this function when the player's state changes.
-function onPlayerStateChange(e) {
-  console.log('player state changed to ', e.data);
-  console.log('start: playedViaSocket=', playedViaSocket);
-  console.log('start: changeVideoViaSocket=', changeVideoViaSocket);
+function onPlayerStateChange(event) {
+  console.log('player state changed');
   var videoId = (0, _getYoutubeVideoId.getYouTubeVideoId)(player.getVideoUrl()); // event.target.getVideoData().video_id;
-  var videoTitle = e.target.getVideoData().title;
+  var videoTitle = event.target.getVideoData().title;
 
   var newVideo = {
     videoId: videoId,
-    title: videoTitle,
-    socketId: socketId
+    title: videoTitle
   };
 
   if (player.getPlaylist() && player.getPlaylist().length) {
@@ -18067,22 +18063,19 @@ function onPlayerStateChange(e) {
 
   document.title = videoTitle;
 
-  switch (e.data) {
+  switch (event.data) {
     case YT.PlayerState.PLAYING:
       var event = {
         type: 'play',
         typeDescription: 'played',
         created: new Date().toISOString(),
         videoId: videoId,
-        videoTitle: videoTitle,
-        socketId: socketId
+        videoTitle: videoTitle
       };
       if (!playedViaSocket && !initialPlay) {
         socket.emit('play', event);
       }
-      playedViaSocket = false;
       initialPlay = false;
-      changeVideoViaSocket = false;
       break;
     case YT.PlayerState.PAUSED:
       var event = {
@@ -18098,9 +18091,9 @@ function onPlayerStateChange(e) {
       break;
   }
 
-  console.log('end: playedViaSocket=', playedViaSocket);
-  console.log('end: changeVideoViaSocket=', changeVideoViaSocket);
+  playedViaSocket = false;
   pausedViaSocket = false;
+  changeVideoViaSocket = false;
 }
 
 function changeVideo(video, playbackType) {
@@ -18164,10 +18157,6 @@ searchInput.on('keyup', function (e) {
 
 var socket = io();
 
-socket.on('connect', function () {
-  socketId = socket.id;
-});
-
 socket.on('pause', function (e) {
   console.log('pausing the video via socket', e);
   pausedViaSocket = true;
@@ -18177,24 +18166,14 @@ socket.on('pause', function (e) {
 
 socket.on('play', function (e) {
   console.log('playing the video via socket', e);
-  console.log('socketId=', socketId);
-  console.log('e.socketId=', e.socketId);
-  if (socketId && socketId !== e.socketId) {
-    changeVideoViaSocket = true;
-    playedViaSocket = true;
-  }
+  playedViaSocket = true;
   playVideo();
   (0, _eventHtml.appendEventHtml)((0, _eventHtml.getEventHtml)(e), '.list');
 });
 
 socket.on('changing video', function (video) {
   console.log('changing video to' + video.videoId);
-  console.log('socketId=', socketId);
-  console.log('video.socketId=', video.socketId);
-  if (socketId && socketId !== video.socketId) {
-    changeVideoViaSocket = true;
-    playedViaSocket = true;
-  }
+  changeVideoViaSocket = true;
 
   if (video.playlist && video.playlist.length) {
     player.loadPlaylist(video.playlist, video.playlistIndex);
