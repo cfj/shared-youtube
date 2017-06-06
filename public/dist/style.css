@@ -536,6 +536,18 @@ pre.error {
   width: 80%;
   padding: 10px 0; }
 
+.search-results-container {
+  position: relative;
+  width: 700px;
+  margin: 0 auto;
+  margin-top: 5px; }
+  .search-results-container a {
+    display: block; }
+    .search-results-container a:hover {
+      background: #eee; }
+  .search-results-container .tile-content {
+    padding-left: 0 !important; }
+
 .event {
   display: -ms-flexbox;
   display: flex;
@@ -548,15 +560,6 @@ pre.error {
   .event__description {
     width: 85%;
     font-size: 0.8em; }
-
-.events {
-  border-radius: 3px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  overflow: auto;
-  margin-bottom: 20px;
-  max-height: 990px; }
 
 .login {
   text-align: center; }
@@ -647,5 +650,17 @@ header {
 
 .content > div:first-child {
   margin-right: 10px; }
+
+.hidden {
+  display: none; }
+
+.card {
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  overflow: auto;
+  margin-bottom: 20px;
+  max-height: 990px; }
 
 /*# sourceMappingURL=style.css.map*/

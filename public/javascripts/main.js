@@ -1,9 +1,11 @@
 import '../sass/style.scss';
 import axios from 'axios';
+import debounce from 'debounce';
 
 import { $, $$ } from './modules/bling';
 import { getYouTubeVideoId, getYouTubePlaylistId } from './modules/getYoutubeVideoId'
 import { getEventHtml, appendEventHtml } from './modules/eventHtml'
+import { getSearchResultHtml } from './modules/searchResultHtml'
 import { moment } from './modules/configuredMoment';
 
 var tag = document.createElement('script');
@@ -208,8 +210,14 @@ function playVideo() {
 }
 
 var searchInput = $('#search-input');
+var searchResultsContainer = $('.search-results-container');
+var searchResults = $('#search-results');
 
-searchInput.on('keyup', function(e) {
+function search(e) {
+  if (!this.value) {
+    searchResultsContainer.classList.add('hidden');
+  }
+
   if (e.keyCode === 13) {
     var url = this.value;
 
@@ -228,8 +236,30 @@ searchInput.on('keyup', function(e) {
     }
 
     this.value = '';
+  } else if (this.value) {
+    axios
+      .get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=${this.value}&type=video,playlist`)
+      .then(res => {
+        searchResultsContainer.classList.remove('hidden');
+        searchResults.innerHTML = res.data.items
+        .map(item => {
+          return {
+            title: item.snippet.title,
+            id: item.id,
+            thumbnails: item.snippet.thumbnails,
+            description: item.snippet.description
+          };
+        })
+        .map(getSearchResultHtml)
+        .join('');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
-});
+}
+
+searchInput.on('keyup', debounce(search, 500));
 
 var socket = io();
 
@@ -241,7 +271,7 @@ socket.on('pause', (e) => {
   console.log('pausing the video via socket', e);
   pausedViaSocket = true;
   pauseVideo();
-  appendEventHtml(getEventHtml(e), '.list');
+  appendEventHtml(getEventHtml(e), '.event-list');
 });
 
 socket.on('play', (e) => {
@@ -254,7 +284,7 @@ socket.on('play', (e) => {
     playedViaSocket = true;
   }
   playVideo();
-  appendEventHtml(getEventHtml(e), '.list');
+  appendEventHtml(getEventHtml(e), '.event-list');
 });
 
 socket.on('changing video', (video) => {
@@ -304,6 +334,27 @@ $('.events-container .list').on('click', (e) => {
     console.log('clicked, videoId is', videoId);
     changeVideo(videoId, { type: 'single' });
   }
+});
+
+/*
+ * Load video when clicking the video in the search results
+*/
+
+$('.search-results-container').on('click', (e) => {
+  let anchor = event.target.closest('a');
+  if (!anchor) return;
+
+  e.preventDefault();
+  let youtubeId = anchor.href.split('#')[1];
+
+  if (anchor.getAttribute('data-type') === 'youtube#video') {
+    changeVideo(youtubeId, { type: 'single' });    
+  } else {
+    changeVideo(youtubeId, { type: 'playlist' });  
+  }
+
+  searchInput.value = '';
+  searchResultsContainer.classList.add('hidden');
 });
 
 /*

@@ -17,3 +17,22 @@
   width: 80%;
   padding: 10px 0;
 }
+
+.search-results-container {
+  position: relative;
+  width: 700px;
+  margin: 0 auto;
+  margin-top: 5px;
+
+  a {
+    display: block;
+
+    &:hover {
+      background: #eee;
+    }
+  }
+
+  .tile-content {
+    padding-left: 0 !important;
+  }
+}

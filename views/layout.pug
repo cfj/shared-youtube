@@ -10,7 +10,9 @@ html
     header
       .search-container
         .search
-          input(type="text" name="search" id="search-input" placeholder="Video URL or search term")
+          input(type="text" name="search" id="search-input" placeholder="Video URL or type to search")
+        .search-results-container.card.hidden
+          ul.list#search-results
 
     .content
       block content

@@ -6,14 +6,14 @@ block content
 
   .events-container
     if !user
-      .events
+      .events.card
         .login
           div You must be signed in to make changes.
           a(href="/auth/google" class="login__button")
             
-    .events
+    .events.card
       if events
-        ul.list
+        ul.list.event-list
           each event in events
             if  event.creator
               li.tile
