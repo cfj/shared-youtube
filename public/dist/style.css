@@ -548,7 +548,8 @@ pre.error {
   .search-results-container .tile-content {
     padding-left: 0 !important; }
   .search-results-container .tile-text {
-    padding-left: 10px !important; }
+    padding-left: 10px !important;
+    padding-top: 0 !important; }
 
 .event {
   display: -ms-flexbox;
