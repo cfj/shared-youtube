@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 142);
+/******/ 	return __webpack_require__(__webpack_require__.s = 144);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1886,7 +1886,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         if (!locales[name] && typeof module !== 'undefined' && module && module.exports) {
             try {
                 oldLocale = globalLocale._abbr;
-                __webpack_require__(141)("./" + name);
+                __webpack_require__(143)("./" + name);
                 // because defineLocale currently also sets the global locale, we
                 // want to undo that for lazy loaded locales
                 getSetGlobalLocale(oldLocale);
@@ -4273,7 +4273,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     return hooks;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(140)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(142)(module)))
 
 /***/ }),
 /* 1 */
@@ -4586,7 +4586,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(137);
+var normalizeHeaderName = __webpack_require__(139);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 var DEFAULT_CONTENT_TYPE = {
@@ -4720,12 +4720,12 @@ exports.moment = _moment2.default;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
-var settle = __webpack_require__(129);
-var buildURL = __webpack_require__(132);
-var parseHeaders = __webpack_require__(138);
-var isURLSameOrigin = __webpack_require__(136);
+var settle = __webpack_require__(131);
+var buildURL = __webpack_require__(134);
+var parseHeaders = __webpack_require__(140);
+var isURLSameOrigin = __webpack_require__(138);
 var createError = __webpack_require__(7);
-var btoa = typeof window !== 'undefined' && window.btoa && window.btoa.bind(window) || __webpack_require__(131);
+var btoa = typeof window !== 'undefined' && window.btoa && window.btoa.bind(window) || __webpack_require__(133);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -4818,7 +4818,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(134);
+      var cookies = __webpack_require__(136);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ? cookies.read(config.xsrfCookieName) : undefined;
@@ -4935,7 +4935,7 @@ module.exports = function isCancel(value) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(128);
+var enhanceError = __webpack_require__(130);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -15862,10 +15862,74 @@ process.umask = function () {
 "use strict";
 
 
-module.exports = __webpack_require__(123);
+module.exports = __webpack_require__(125);
 
 /***/ }),
 /* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+
+module.exports = function debounce(func, wait, immediate) {
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function debounced() {
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function () {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+/***/ }),
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15895,7 +15959,7 @@ exports.$ = $;
 exports.$$ = $$;
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15925,7 +15989,7 @@ exports.getEventHtml = getEventHtml;
 exports.appendEventHtml = appendEventHtml;
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15965,13 +16029,31 @@ exports.getYouTubeVideoId = getYouTubeVideoId;
 exports.getYouTubePlaylistId = getYouTubePlaylistId;
 
 /***/ }),
-/* 122 */
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function getSearchResultHtml(item) {
+  var html = "\n    <li class=\"tile\">\n      <a href=\"#" + (item.id.videoId || item.id.playlistId) + "\" data-type=\"" + item.id.kind + "\">\n        <div class=\"tile-content\">\n          <div class=\"pull-left\">\n            <img src=\"" + item.thumbnails.default.url + "\">\n          </div>\n          <div class=\"tile-text\">\n            " + item.title + "\n            <small>" + item.description + "</small>\n          </div>\n        </div>\n      </a>\n    </li>";
+
+  return html;
+}
+
+exports.getSearchResultHtml = getSearchResultHtml;
+
+/***/ }),
+/* 124 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15979,7 +16061,7 @@ exports.getYouTubePlaylistId = getYouTubePlaylistId;
 
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(8);
-var Axios = __webpack_require__(125);
+var Axios = __webpack_require__(127);
 var defaults = __webpack_require__(2);
 
 /**
@@ -16014,14 +16096,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(5);
-axios.CancelToken = __webpack_require__(124);
+axios.CancelToken = __webpack_require__(126);
 axios.isCancel = __webpack_require__(6);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(139);
+axios.spread = __webpack_require__(141);
 
 module.exports = axios;
 
@@ -16029,7 +16111,7 @@ module.exports = axios;
 module.exports.default = axios;
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16092,7 +16174,7 @@ CancelToken.source = function source() {
 module.exports = CancelToken;
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16100,10 +16182,10 @@ module.exports = CancelToken;
 
 var defaults = __webpack_require__(2);
 var utils = __webpack_require__(1);
-var InterceptorManager = __webpack_require__(126);
-var dispatchRequest = __webpack_require__(127);
-var isAbsoluteURL = __webpack_require__(135);
-var combineURLs = __webpack_require__(133);
+var InterceptorManager = __webpack_require__(128);
+var dispatchRequest = __webpack_require__(129);
+var isAbsoluteURL = __webpack_require__(137);
+var combineURLs = __webpack_require__(135);
 
 /**
  * Create a new instance of Axios
@@ -16183,7 +16265,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = Axios;
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16241,14 +16323,14 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 module.exports = InterceptorManager;
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var transformData = __webpack_require__(130);
+var transformData = __webpack_require__(132);
 var isCancel = __webpack_require__(6);
 var defaults = __webpack_require__(2);
 
@@ -16307,7 +16389,7 @@ module.exports = function dispatchRequest(config) {
 };
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16333,7 +16415,7 @@ module.exports = function enhanceError(error, config, code, response) {
 };
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16359,7 +16441,7 @@ module.exports = function settle(resolve, reject, response) {
 };
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16385,7 +16467,7 @@ module.exports = function transformData(data, headers, fns) {
 };
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16426,7 +16508,7 @@ function btoa(input) {
 module.exports = btoa;
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16493,7 +16575,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 };
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16512,7 +16594,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 };
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16571,7 +16653,7 @@ function nonStandardBrowserEnv() {
 }();
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16593,7 +16675,7 @@ module.exports = function isAbsoluteURL(url) {
 };
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16662,7 +16744,7 @@ function nonStandardBrowserEnv() {
 }();
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16680,7 +16762,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 };
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16725,7 +16807,7 @@ module.exports = function parseHeaders(headers) {
 };
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16759,7 +16841,7 @@ module.exports = function spread(callback) {
 };
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16789,7 +16871,7 @@ module.exports = function (module) {
 };
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -17024,33 +17106,33 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 141;
+webpackContext.id = 143;
 
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(122);
+__webpack_require__(124);
 
 var _axios = __webpack_require__(118);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _debounce = __webpack_require__(149);
+var _debounce = __webpack_require__(119);
 
 var _debounce2 = _interopRequireDefault(_debounce);
 
-var _bling = __webpack_require__(119);
+var _bling = __webpack_require__(120);
 
-var _getYoutubeVideoId = __webpack_require__(121);
+var _getYoutubeVideoId = __webpack_require__(122);
 
-var _eventHtml = __webpack_require__(120);
+var _eventHtml = __webpack_require__(121);
 
-var _searchResultHtml = __webpack_require__(150);
+var _searchResultHtml = __webpack_require__(123);
 
 var _configuredMoment = __webpack_require__(3);
 
@@ -17407,94 +17489,6 @@ window.setInterval(function () {
     changedVolumeViaSocket = false;
   }
 }, 1000);
-
-/***/ }),
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
- *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
- */
-
-module.exports = function debounce(func, wait, immediate) {
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
-
-  function later() {
-    var last = Date.now() - timestamp;
-
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
-
-  var debounced = function debounced() {
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
-
-    return result;
-  };
-
-  debounced.clear = function () {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
-};
-
-/***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-function getSearchResultHtml(item) {
-  var html = "\n    <li class=\"tile\">\n      <a href=\"#" + (item.id.videoId || item.id.playlistId) + "\" data-type=\"" + item.id.kind + "\">\n        <div class=\"tile-content\">\n          <img src=\"" + item.thumbnails.default.url + "\">\n        </div>\n        <div class=\"tile-text\">\n          " + item.title + "\n          <small>" + item.description + "</small>\n        </div>\n      </a>\n    </li>";
-
-  return html;
-}
-
-exports.getSearchResultHtml = getSearchResultHtml;
 
 /***/ })
 /******/ ]);

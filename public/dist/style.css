@@ -547,6 +547,8 @@ pre.error {
       background: #eee; }
   .search-results-container .tile-content {
     padding-left: 0 !important; }
+  .search-results-container .tile-text {
+    padding-left: 10px !important; }
 
 .event {
   display: -ms-flexbox;
@@ -662,5 +664,8 @@ header {
   overflow: auto;
   margin-bottom: 20px;
   max-height: 990px; }
+
+.pull-left {
+  float: left; }
 
 /*# sourceMappingURL=style.css.map*/
