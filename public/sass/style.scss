@@ -24,6 +24,10 @@ header {
   height: 56px;
   background: $headerGrad;
   display: flex;
+
+  a {
+    color: #fff;
+  }
 }
 
 .content {
@@ -74,7 +78,27 @@ header {
   margin-top: 8px;
 
   img {
+    position: relative;
     border-radius: 50%;
     width: 40px;
+    transition: all 0.2s ease;
+    right: -50px;
   }
+
+  &:hover {
+    img {
+      right: 15px;
+    }
+
+    .logout {
+      opacity: 1;
+    }
+  }
+}
+
+.logout {
+  position: relative;
+  transition: all 0.1s;
+  opacity: 0;
+  bottom: 16px;
 }

@@ -17,6 +17,8 @@ html
         if user
           .user-icon
             img(src=user.google.profileImageUrl)
+            span.logout
+              a(href="/logout") Sign out
 
     .content
       block content

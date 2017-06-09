@@ -637,6 +637,8 @@ header {
   background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
   display: -ms-flexbox;
   display: flex; }
+  header a {
+    color: #fff; }
 
 .content {
   display: -ms-flex;
@@ -677,7 +679,20 @@ header {
   margin-right: 8px;
   margin-top: 8px; }
   .user-icon img {
+    position: relative;
     border-radius: 50%;
-    width: 40px; }
+    width: 40px;
+    transition: all 0.2s ease;
+    right: -50px; }
+  .user-icon:hover img {
+    right: 15px; }
+  .user-icon:hover .logout {
+    opacity: 1; }
+
+.logout {
+  position: relative;
+  transition: all 0.1s;
+  opacity: 0;
+  bottom: 16px; }
 
 /*# sourceMappingURL=style.css.map*/
