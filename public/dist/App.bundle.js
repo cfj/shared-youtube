@@ -17336,14 +17336,17 @@ function playVideo() {
 var searchInput = (0, _bling.$)('#search-input');
 var searchResultsContainer = (0, _bling.$)('.search-results-container');
 var searchResults = (0, _bling.$)('#search-results');
+var loadingIcon = (0, _bling.$)('.loader');
 
 function search(e) {
-  if (!this.value) {
+  if (!searchInput.value) {
     searchResultsContainer.classList.add('hidden');
+    searchResults.classList.add('hidden');
+    loadingIcon.classList.remove('hidden');
   }
 
   if (e.keyCode === 13) {
-    var url = this.value;
+    var url = searchInput.value;
 
     if (!url.startsWith('http')) {
       // Wasn't a url then but a text search
@@ -17359,10 +17362,11 @@ function search(e) {
       }
     }
 
-    this.value = '';
-  } else if (this.value) {
-    _axios2.default.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=' + this.value + '&type=video,playlist').then(function (res) {
-      searchResultsContainer.classList.remove('hidden');
+    searchInput.value = '';
+  } else if (searchInput.value) {
+    _axios2.default.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=' + searchInput.value + '&type=video,playlist').then(function (res) {
+      loadingIcon.classList.add('hidden');
+      searchResults.classList.remove('hidden');
       searchResults.innerHTML = res.data.items.map(function (item) {
         return {
           title: item.snippet.title,
@@ -17376,6 +17380,10 @@ function search(e) {
     });
   }
 }
+
+searchInput.on('keyup', function (e) {
+  searchResultsContainer.classList.remove('hidden');
+});
 
 searchInput.on('keyup', (0, _debounce2.default)(search, 500));
 

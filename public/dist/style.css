@@ -450,7 +450,7 @@ a {
   color: #31a4d2; }
 
 p a {
-  border-bottom: 2px solid #FFC40E; }
+  border-bottom: 2px solid #ffa700; }
 
 p {
   line-height: 2;
@@ -482,7 +482,7 @@ p {
         transform: skew(-5deg); }
   .title a {
     border-bottom: 0;
-    background-image: linear-gradient(to right, rgba(255, 196, 14, 0.8) 100%, rgba(255, 196, 14, 0.8) 50%); }
+    background-image: linear-gradient(to right, rgba(255, 167, 0, 0.8) 100%, rgba(255, 167, 0, 0.8) 50%); }
 
 .title--single {
   max-width: 600px;
@@ -496,7 +496,7 @@ p {
 
 .button {
   border: 0;
-  background: #FFC40E;
+  background: #ffa700;
   color: #303030;
   font-family: 'Panama';
   font-weight: 600; }
@@ -624,6 +624,61 @@ pre.error {
 .ink-reaction {
   position: relative;
   overflow: hidden; }
+
+.loader {
+  position: relative;
+  margin: 0 auto;
+  width: 30px; }
+  .loader:before {
+    content: '';
+    display: block;
+    padding-top: 100%; }
+
+.circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  -ms-transform-origin: center center;
+      transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto; }
+
+.path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round; }
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg); } }
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0; }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px; }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px; } }
+
+@keyframes color {
+  100%,
+  0% {
+    stroke: #d62d20; }
+  40% {
+    stroke: #0057e7; }
+  66% {
+    stroke: #008744; }
+  80%,
+  90% {
+    stroke: #ffa700; } }
 
 .events-container h1 {
   font-size: 1.2em;
