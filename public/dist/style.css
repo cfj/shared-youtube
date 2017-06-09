@@ -669,4 +669,15 @@ header {
 .pull-left {
   float: left; }
 
+.user-container {
+  width: 20%;
+  text-align: right; }
+
+.user-icon {
+  margin-right: 8px;
+  margin-top: 8px; }
+  .user-icon img {
+    border-radius: 50%;
+    width: 40px; }
+
 /*# sourceMappingURL=style.css.map*/
