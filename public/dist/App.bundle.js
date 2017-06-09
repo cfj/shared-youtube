@@ -17364,7 +17364,7 @@ function search(e) {
 
     searchInput.value = '';
   } else if (searchInput.value) {
-    _axios2.default.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=' + searchInput.value + '&type=video,playlist').then(function (res) {
+    _axios2.default.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=' + searchInput.value + '&type=video,playlist&maxResults=9').then(function (res) {
       loadingIcon.classList.add('hidden');
       searchResults.classList.remove('hidden');
       searchResults.innerHTML = res.data.items.map(function (item) {
@@ -17468,6 +17468,10 @@ window.setInterval(function () {
 (0, _bling.$)('.search-results-container').on('click', function (e) {
   var anchor = event.target.closest('a');
   if (!anchor) return;
+
+  searchResultsContainer.classList.add('hidden');
+  searchResults.classList.add('hidden');
+  loadingIcon.classList.remove('hidden');
 
   e.preventDefault();
   var youtubeId = anchor.href.split('#')[1];

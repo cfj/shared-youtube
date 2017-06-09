@@ -241,7 +241,7 @@ function search(e) {
     searchInput.value = '';
   } else if (searchInput.value) {
     axios
-      .get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=${searchInput.value}&type=video,playlist`)
+      .get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=${searchInput.value}&type=video,playlist&maxResults=9`)
       .then(res => {
         loadingIcon.classList.add('hidden');
         searchResults.classList.remove('hidden');
@@ -351,6 +351,10 @@ $('.events-container .list').on('click', (e) => {
 $('.search-results-container').on('click', (e) => {
   let anchor = event.target.closest('a');
   if (!anchor) return;
+
+  searchResultsContainer.classList.add('hidden');
+  searchResults.classList.add('hidden');
+  loadingIcon.classList.remove('hidden');
 
   e.preventDefault();
   let youtubeId = anchor.href.split('#')[1];
