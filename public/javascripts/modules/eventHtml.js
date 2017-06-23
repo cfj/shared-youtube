@@ -23,7 +23,7 @@ function getEventHtml(event) {
 function appendEventHtml(html, selector) {
   var elementToAppendTo = document.querySelector(selector);
 
-  elementToAppendTo.innerHTML = html + elementToAppendTo.innerHTML;
+  elementToAppendTo.insertAdjacentHTML('afterbegin', html);
 }
 
 export {
