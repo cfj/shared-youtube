@@ -417,6 +417,10 @@ $('.search-results-container').on('click', (e) => {
   searchResultsContainer.classList.add('hidden');
 });
 
+$('body').on('click', (e) => {
+  searchResultsContainer.classList.add('hidden');
+});
+
 /*
  * Monitor the volume
 */

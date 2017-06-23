@@ -17534,6 +17534,10 @@ window.setInterval(function () {
   searchResultsContainer.classList.add('hidden');
 });
 
+(0, _bling.$)('body').on('click', function (e) {
+  searchResultsContainer.classList.add('hidden');
+});
+
 /*
  * Monitor the volume
 */
