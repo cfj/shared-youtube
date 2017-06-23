@@ -215,7 +215,7 @@ var searchResults = $('#search-results');
 var loadingIcon = $('.loader');
 
 function search(e) {
-  if (!searchInput.value) {
+  if (!searchInput.value || e.keyCode === 13) {
     searchResultsContainer.classList.add('hidden');
     searchResults.classList.add('hidden');
     loadingIcon.classList.remove('hidden');

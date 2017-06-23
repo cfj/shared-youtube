@@ -17339,7 +17339,7 @@ var searchResults = (0, _bling.$)('#search-results');
 var loadingIcon = (0, _bling.$)('.loader');
 
 function search(e) {
-  if (!searchInput.value) {
+  if (!searchInput.value || e.keyCode === 13) {
     searchResultsContainer.classList.add('hidden');
     searchResults.classList.add('hidden');
     loadingIcon.classList.remove('hidden');
