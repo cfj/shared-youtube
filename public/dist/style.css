@@ -536,6 +536,9 @@ pre.error {
   width: 80%;
   padding: 10px 0; }
 
+.search-results-active {
+  background: #eee; }
+
 .search-results-container {
   position: relative;
   width: 700px;

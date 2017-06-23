@@ -17337,8 +17337,11 @@ var searchInput = (0, _bling.$)('#search-input');
 var searchResultsContainer = (0, _bling.$)('.search-results-container');
 var searchResults = (0, _bling.$)('#search-results');
 var loadingIcon = (0, _bling.$)('.loader');
+var activeClass = 'search-results-active';
 
 function search(e) {
+  var selectedSearchResult = searchResults.querySelector('.' + activeClass);
+
   if (!searchInput.value || e.keyCode === 13) {
     searchResultsContainer.classList.add('hidden');
     searchResults.classList.add('hidden');
@@ -17346,6 +17349,23 @@ function search(e) {
   }
 
   if (e.keyCode === 13) {
+
+    if (selectedSearchResult) {
+      var anchor = selectedSearchResult.querySelector('a');
+      var youtubeId = anchor.href.split('#')[1];
+
+      if (anchor.getAttribute('data-type') === 'youtube#video') {
+        changeVideo(youtubeId, { type: 'single' });
+      } else {
+        changeVideo(youtubeId, { type: 'playlist' });
+      }
+
+      selectedSearchResult.classList.remove(activeClass);
+      searchInput.value = '';
+
+      return;
+    }
+
     var url = searchInput.value;
 
     if (!url.startsWith('http')) {
@@ -17363,7 +17383,7 @@ function search(e) {
     }
 
     searchInput.value = '';
-  } else if (searchInput.value) {
+  } else if (searchInput.value && ![38, 40].includes(e.keyCode)) {
     _axios2.default.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet&q=' + searchInput.value + '&type=video,playlist&maxResults=9').then(function (res) {
       loadingIcon.classList.add('hidden');
       searchResults.classList.remove('hidden');
@@ -17383,6 +17403,34 @@ function search(e) {
 
 searchInput.on('keyup', function (e) {
   searchResultsContainer.classList.remove('hidden');
+});
+
+searchInput.on('keyup', function (e) {
+  if (![38, 40].includes(e.keyCode)) {
+    return;
+  }
+
+  var current = searchResults.querySelector('.' + activeClass);
+  var items = searchResults.querySelectorAll('li');
+
+  console.log(current);
+
+  var next = void 0;
+  if (e.keyCode === 40 && current) {
+    next = current.nextElementSibling || items[0];
+  } else if (e.keyCode === 40) {
+    next = items[0];
+  } else if (e.keyCode === 38 && current) {
+    next = current.previousElementSibling || items[items.length - 1];
+  } else if (e.keyCode === 38) {
+    next = items[items.length - 1];
+  }
+
+  if (current && next) {
+    current.classList.remove(activeClass);
+  }
+
+  next.classList.add(activeClass);
 });
 
 searchInput.on('keyup', (0, _debounce2.default)(search, 500));
