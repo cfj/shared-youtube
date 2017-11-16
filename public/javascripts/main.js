@@ -111,7 +111,15 @@ function onPlayerStateChange(e) {
   console.log('start: playedViaSocket=', playedViaSocket);
   console.log('start: changeVideoViaSocket=', changeVideoViaSocket);
   var videoId = getYouTubeVideoId(player.getVideoUrl()); // event.target.getVideoData().video_id;
-  var videoTitle = e.target.getVideoData().title;
+  var videoTitle; //e.target.getVideoData().title;
+
+  axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet`)
+       .then(res => {
+          videoTitle = res.data.items[0].snippet.title;
+       })
+       .catch(err => {
+        console.log(err);
+       });
 
   var newVideo = {
     videoId: videoId,
