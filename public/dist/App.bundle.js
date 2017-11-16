@@ -17239,69 +17239,68 @@ function onPlayerStateChange(e) {
 
   _axios2.default.get('https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet').then(function (res) {
     videoTitle = res.data.items[0].snippet.title;
+    var newVideo = {
+      videoId: videoId,
+      title: videoTitle,
+      socketId: socketId
+    };
+
+    if (player.getPlaylist() && player.getPlaylist().length) {
+      newVideo.playlist = player.getPlaylist();
+      newVideo.playlistIndex = player.getPlaylistIndex();
+    }
+
+    console.log('currentVideo', currentVideo);
+    console.log('newVideo', newVideo);
+
+    if (currentVideo.videoId !== newVideo.videoId && !changeVideoViaSocket) {
+      console.log('emitting change video event', newVideo);
+      socket.emit('changing video', newVideo);
+      storeVideoHistory(newVideo);
+    }
+
+    currentVideo = newVideo;
+
+    document.title = videoTitle;
+
+    switch (e.data) {
+      case YT.PlayerState.PLAYING:
+        var event = {
+          type: 'play',
+          typeDescription: 'played',
+          created: new Date().toISOString(),
+          videoId: videoId,
+          videoTitle: videoTitle,
+          socketId: socketId
+        };
+        if (!playedViaSocket && !initialPlay) {
+          console.log('emitting play event', event);
+          socket.emit('play', event);
+        }
+        initialPlay = false;
+        playedViaSocket = false;
+        changeVideoViaSocket = false;
+        break;
+      case YT.PlayerState.PAUSED:
+        var event = {
+          type: 'pause',
+          typeDescription: 'paused',
+          created: new Date().toISOString(),
+          videoId: videoId,
+          videoTitle: videoTitle
+        };
+        if (!pausedViaSocket) {
+          socket.emit('pause', event);
+        }
+        break;
+    }
+
+    console.log('end: playedViaSocket=', playedViaSocket);
+    console.log('end: changeVideoViaSocket=', changeVideoViaSocket);
+    pausedViaSocket = false;
   }).catch(function (err) {
     console.log(err);
   });
-
-  var newVideo = {
-    videoId: videoId,
-    title: videoTitle,
-    socketId: socketId
-  };
-
-  if (player.getPlaylist() && player.getPlaylist().length) {
-    newVideo.playlist = player.getPlaylist();
-    newVideo.playlistIndex = player.getPlaylistIndex();
-  }
-
-  console.log('currentVideo', currentVideo);
-  console.log('newVideo', newVideo);
-
-  if (currentVideo.videoId !== newVideo.videoId && !changeVideoViaSocket) {
-    console.log('emitting change video event', newVideo);
-    socket.emit('changing video', newVideo);
-    storeVideoHistory(newVideo);
-  }
-
-  currentVideo = newVideo;
-
-  document.title = videoTitle;
-
-  switch (e.data) {
-    case YT.PlayerState.PLAYING:
-      var event = {
-        type: 'play',
-        typeDescription: 'played',
-        created: new Date().toISOString(),
-        videoId: videoId,
-        videoTitle: videoTitle,
-        socketId: socketId
-      };
-      if (!playedViaSocket && !initialPlay) {
-        console.log('emitting play event', event);
-        socket.emit('play', event);
-      }
-      initialPlay = false;
-      playedViaSocket = false;
-      changeVideoViaSocket = false;
-      break;
-    case YT.PlayerState.PAUSED:
-      var event = {
-        type: 'pause',
-        typeDescription: 'paused',
-        created: new Date().toISOString(),
-        videoId: videoId,
-        videoTitle: videoTitle
-      };
-      if (!pausedViaSocket) {
-        socket.emit('pause', event);
-      }
-      break;
-  }
-
-  console.log('end: playedViaSocket=', playedViaSocket);
-  console.log('end: changeVideoViaSocket=', changeVideoViaSocket);
-  pausedViaSocket = false;
 }
 
 function changeVideo(video, playbackType) {

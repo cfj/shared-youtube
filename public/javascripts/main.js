@@ -116,70 +116,69 @@ function onPlayerStateChange(e) {
   axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyCXX4mzTs26adm1hR2qAhIJfHbL4yQ4vTw&part=snippet`)
        .then(res => {
           videoTitle = res.data.items[0].snippet.title;
+            var newVideo = {
+              videoId: videoId,
+              title: videoTitle,
+              socketId
+            };
+
+            if (player.getPlaylist() && player.getPlaylist().length) {
+              newVideo.playlist = player.getPlaylist();
+              newVideo.playlistIndex = player.getPlaylistIndex();
+            }
+
+            console.log('currentVideo', currentVideo);
+            console.log('newVideo', newVideo);
+
+            if (currentVideo.videoId !== newVideo.videoId && !changeVideoViaSocket) {
+              console.log('emitting change video event', newVideo);
+              socket.emit('changing video', newVideo);
+              storeVideoHistory(newVideo);
+            }
+
+            currentVideo = newVideo;
+
+            document.title = videoTitle;
+
+            switch (e.data) {
+              case YT.PlayerState.PLAYING:
+                var event = {
+                  type: 'play',
+                  typeDescription: 'played',
+                  created: new Date().toISOString(),
+                  videoId,
+                  videoTitle,
+                  socketId
+                };
+                if (!playedViaSocket && !initialPlay) {
+                  console.log('emitting play event', event);
+                  socket.emit('play', event);
+                }
+                initialPlay = false;
+                playedViaSocket = false;
+                changeVideoViaSocket = false;
+                break;
+              case YT.PlayerState.PAUSED:
+                var event = {
+                  type: 'pause',
+                  typeDescription: 'paused',
+                  created: new Date().toISOString(),
+                  videoId,
+                  videoTitle
+                };
+                if (!pausedViaSocket) {
+                  socket.emit('pause', event);
+                }
+                break;
+            }
+            
+            console.log('end: playedViaSocket=', playedViaSocket);
+            console.log('end: changeVideoViaSocket=', changeVideoViaSocket);
+            pausedViaSocket = false;
        })
        .catch(err => {
         console.log(err);
        });
-
-  var newVideo = {
-    videoId: videoId,
-    title: videoTitle,
-    socketId
-  };
-
-  if (player.getPlaylist() && player.getPlaylist().length) {
-    newVideo.playlist = player.getPlaylist();
-    newVideo.playlistIndex = player.getPlaylistIndex();
-  }
-
-  console.log('currentVideo', currentVideo);
-  console.log('newVideo', newVideo);
-
-  if (currentVideo.videoId !== newVideo.videoId && !changeVideoViaSocket) {
-    console.log('emitting change video event', newVideo);
-    socket.emit('changing video', newVideo);
-    storeVideoHistory(newVideo);
-  }
-
-  currentVideo = newVideo;
-
-  document.title = videoTitle;
-
-  switch (e.data) {
-    case YT.PlayerState.PLAYING:
-      var event = {
-        type: 'play',
-        typeDescription: 'played',
-        created: new Date().toISOString(),
-        videoId,
-        videoTitle,
-        socketId
-      };
-      if (!playedViaSocket && !initialPlay) {
-        console.log('emitting play event', event);
-        socket.emit('play', event);
-      }
-      initialPlay = false;
-      playedViaSocket = false;
-      changeVideoViaSocket = false;
-      break;
-    case YT.PlayerState.PAUSED:
-      var event = {
-        type: 'pause',
-        typeDescription: 'paused',
-        created: new Date().toISOString(),
-        videoId,
-        videoTitle
-      };
-      if (!pausedViaSocket) {
-        socket.emit('pause', event);
-      }
-      break;
-  }
-  
-  console.log('end: playedViaSocket=', playedViaSocket);
-  console.log('end: changeVideoViaSocket=', changeVideoViaSocket);
-  pausedViaSocket = false;
 }
 
 function changeVideo(video, playbackType) {
